@@ -38,8 +38,6 @@ yu-gi-oh-forbidden-memories-fusions/
 3. **View Fusions**: Click on any card image to open a modal showing all possible fusions
 4. **Fusion Formula**: See the exact combination (Card 1 + Card 2 = Result) for each fusion
 
-```
-
 ## 🤝 Contributing
 
 Contributions are welcome! If you'd like to improve this project:
