@@ -47,7 +47,7 @@ function getPlaceholderImage() {
 // Load cards from JSON file
 async function loadCards() {
     const cards = await fetch('./cards.json').then(response => response.json());
-    return cards.filter(card => card.Fusions && card.Fusions.length > 0);
+    return cards;
 }
 
 function showCards(cards) {
