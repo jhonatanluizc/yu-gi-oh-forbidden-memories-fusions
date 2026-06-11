@@ -146,7 +146,7 @@ function renderFusions(fusions) {
                         <!-- Desktop View -->
                         <div class="hidden lg:grid lg:grid-cols-5 gap-3 xl:gap-4 items-center">
                             <!-- Card 1 -->
-                            <div class="text-center">
+                            <div class="text-center cursor-pointer" onclick='showCardDetails(${JSON.stringify(card1).replace(/'/g, "&apos;")})'>
                                 <img src="${getCardImageUrl(card1)}" alt="${card1?.Name || 'Unknown'}" 
                                      class="w-24 h-32 xl:w-32 xl:h-44 object-cover rounded-lg shadow-lg mx-auto card-hover-scale"
                                      onerror="this.onerror=null; this.src='${getPlaceholderImage(card1?.Name || `Card ${fusion._card1}`)}'"
@@ -161,7 +161,7 @@ function renderFusions(fusions) {
                             </div>
                             
                             <!-- Card 2 -->
-                            <div class="text-center">
+                            <div class="text-center cursor-pointer" onclick='showCardDetails(${JSON.stringify(card2).replace(/'/g, "&apos;")})'>
                                 <img src="${getCardImageUrl(card2)}" alt="${card2?.Name || 'Unknown'}" 
                                      class="w-24 h-32 xl:w-32 xl:h-44 object-cover rounded-lg shadow-lg mx-auto card-hover-scale"
                                      onerror="this.onerror=null; this.src='${getPlaceholderImage(card2?.Name || `Card ${fusion._card2}`)}'"
@@ -176,7 +176,7 @@ function renderFusions(fusions) {
                             </div>
                             
                             <!-- Result -->
-                            <div class="text-center">
+                            <div class="text-center cursor-pointer" onclick='showCardDetails(${JSON.stringify(result).replace(/'/g, "&apos;")})'>
                                 <img src="${getCardImageUrl(result)}" alt="${result?.Name || 'Unknown'}" 
                                      class="w-24 h-32 xl:w-32 xl:h-44 object-cover rounded-lg shadow-lg mx-auto border-2 border-yellow-500 card-hover-scale"
                                      onerror="this.onerror=null; this.src='${getPlaceholderImage(result?.Name || `Card ${fusion._result}`)}'"
@@ -190,7 +190,7 @@ function renderFusions(fusions) {
                         <div class="lg:hidden">
                             <div class="grid grid-cols-2 gap-2 sm:gap-3 mb-2 sm:mb-3">
                                 <!-- Card 1 -->
-                                <div class="text-center">
+                                <div class="text-center cursor-pointer" onclick='showCardDetails(${JSON.stringify(card1).replace(/'/g, "&apos;")})'>
                                     <img src="${getCardImageUrl(card1)}" alt="${card1?.Name || 'Unknown'}" 
                                          class="w-20 h-28 sm:w-28 sm:h-40 object-cover rounded-lg shadow-lg mx-auto"
                                          onerror="this.onerror=null; this.src='${getPlaceholderImage(card1?.Name || `Card ${fusion._card1}`)}'">
@@ -199,7 +199,7 @@ function renderFusions(fusions) {
                                 </div>
                                 
                                 <!-- Card 2 -->
-                                <div class="text-center ">
+                                <div class="text-center cursor-pointer" onclick='showCardDetails(${JSON.stringify(card2).replace(/'/g, "&apos;")})'>
                                     <img src="${getCardImageUrl(card2)}" alt="${card2?.Name || 'Unknown'}" 
                                          class="w-20 h-28 sm:w-28 sm:h-40 object-cover rounded-lg shadow-lg mx-auto"
                                          onerror="this.onerror=null; this.src='${getPlaceholderImage(card2?.Name || `Card ${fusion._card2}`)}'">
@@ -214,7 +214,7 @@ function renderFusions(fusions) {
                             </div>
                             
                             <!-- Result -->
-                            <div class="text-center rounded-lg p-2 sm:p-3">
+                            <div class="text-center rounded-lg p-2 sm:p-3 cursor-pointer" onclick='showCardDetails(${JSON.stringify(result).replace(/'/g, "&apos;")})'>
                                 <img src="${getCardImageUrl(result)}" alt="${result?.Name || 'Unknown'}" 
                                      class="w-28 h-40 sm:w-36 sm:h-48 object-cover rounded-lg shadow-lg mx-auto border-2 border-yellow-500"
                                      onerror="this.onerror=null; this.src='${getPlaceholderImage(result?.Name || `Card ${fusion._result}`)}'">
@@ -244,6 +244,97 @@ function closeModalOnBackdrop(event) {
     if (event.target.id === 'fusionModal') {
         closeFusionModal();
     }
+}
+
+// Show card details modal
+function showCardDetails(card) {
+    if (!card) return;
+    
+    const modal = document.getElementById('cardDetailsModal');
+    const title = document.getElementById('cardDetailsTitle');
+    const content = document.getElementById('cardDetailsContent');
+    
+    title.textContent = card.Name || 'Unknown Card';
+    
+    content.innerHTML = `
+        <div class="flex flex-col items-center">
+            <!-- Card Image -->
+            <div class="mb-4 sm:mb-6">
+                <img src="${getCardImageUrl(card)}" alt="${card.Name}" 
+                     class="w-48 h-64 sm:w-64 sm:h-80 object-cover rounded-lg shadow-2xl border-4 border-yellow-500"
+                     onerror="this.onerror=null; this.src='${getPlaceholderImage(card.Name)}'">
+            </div>
+            
+            <!-- Card Info -->
+            <div class="w-full space-y-3 sm:space-y-4">
+                <!-- Name -->
+                <div class="bg-black bg-opacity-40 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-yellow-700 border-opacity-30">
+                    <h3 class="text-yellow-400 font-bold text-sm mb-1">📛 Name</h3>
+                    <p class="text-white text-base sm:text-lg">${card.Name || 'Unknown'}</p>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-black bg-opacity-40 backdrop-blur-sm rounded-lg p-3 border border-yellow-700 border-opacity-30">
+                        <h3 class="text-yellow-400 font-bold text-sm mb-1">⚔️ Attack</h3>
+                        <p class="text-white text-xl sm:text-2xl font-bold">${card.Attack ?? '?'}</p>
+                    </div>
+                    <div class="bg-black bg-opacity-40 backdrop-blur-sm rounded-lg p-3 border border-yellow-700 border-opacity-30">
+                        <h3 class="text-yellow-400 font-bold text-sm mb-1">🛡️ Defense</h3>
+                        <p class="text-white text-xl sm:text-2xl font-bold">${card.Defense ?? '?'}</p>
+                    </div>
+                </div>
+                
+                <!-- Additional Info -->
+                <div class="grid grid-cols-2 gap-3">
+                    ${card.Level !== null && card.Level !== undefined ? `
+                        <div class="bg-black bg-opacity-40 backdrop-blur-sm rounded-lg p-3 border border-yellow-700 border-opacity-30">
+                            <h3 class="text-yellow-400 font-bold text-sm mb-1">⭐ Level</h3>
+                            <p class="text-white text-lg sm:text-xl">${card.Level}</p>
+                        </div>
+                    ` : ''}
+                    ${card.Type !== null && card.Type !== undefined ? `
+                        <div class="bg-black bg-opacity-40 backdrop-blur-sm rounded-lg p-3 border border-yellow-700 border-opacity-30">
+                            <h3 class="text-yellow-400 font-bold text-sm mb-1">🎴 Type</h3>
+                            <p class="text-white text-lg sm:text-xl">${CARD_TYPES[card.Type] || `Type ${card.Type}`}</p>
+                        </div>
+                    ` : ''}
+                </div>
+                
+                <!-- Fusions Count -->
+                ${card.Fusions && card.Fusions.length > 0 ? `
+                    <div class="bg-black bg-opacity-40 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-yellow-700 border-opacity-30">
+                        <h3 class="text-yellow-400 font-bold text-sm mb-1">🔮 Fusions Available</h3>
+                        <p class="text-white text-lg sm:text-xl">${card.Fusions.length} fusion${card.Fusions.length !== 1 ? 's' : ''}</p>
+                    </div>
+                ` : `
+                    <div class="bg-black bg-opacity-40 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-red-700 border-opacity-30">
+                        <h3 class="text-red-400 font-bold text-sm mb-1">❌ Fusions</h3>
+                        <p class="text-gray-400 text-base">No fusions available</p>
+                    </div>
+                `}
+                
+                <!-- View Fusions Button -->
+                ${card.Fusions && card.Fusions.length > 0 ? `
+                    <button onclick='closeCardDetailsModal(); showFusions(${JSON.stringify(card).replace(/'/g, "&apos;")})' class="w-full bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                        🔥 View All Fusions
+                    </button>
+                ` : ''}
+            </div>
+        </div>
+    `;
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+// Close card details modal
+function closeCardDetailsModal(event) {
+    const modal = document.getElementById('cardDetailsModal');
+    if (event && event.target.id !== 'cardDetailsModal') return;
+    
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
 }
 
 // Search within fusions
@@ -389,11 +480,16 @@ function populateTypeFilter() {
 // Close modal when clicking outside
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('fusionModal');
+    const detailsModal = document.getElementById('cardDetailsModal');
     
-    // ESC key to close modal
+    // ESC key to close modals
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-            closeFusionModal();
+        if (e.key === 'Escape') {
+            if (!detailsModal.classList.contains('hidden')) {
+                closeCardDetailsModal();
+            } else if (!modal.classList.contains('hidden')) {
+                closeFusionModal();
+            }
         }
     });
 
