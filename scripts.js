@@ -445,7 +445,37 @@ function applyFilters() {
         return matchesSearch && matchesLevel && matchesType && matchesAtk && matchesDef;
     });
     
+    // Apply current sort
+    filteredCards = sortCards(filteredCards, document.getElementById('cardSortSelect').value);
     showCards(filteredCards);
+}
+
+// Sort cards on main page
+function sortCards(cards, sortType) {
+    const sorted = [...cards];
+    
+    switch(sortType) {
+        case 'atk-high':
+            sorted.sort((a, b) => (b?.Attack || 0) - (a?.Attack || 0));
+            break;
+        case 'atk-low':
+            sorted.sort((a, b) => (a?.Attack || 0) - (b?.Attack || 0));
+            break;
+        case 'def-high':
+            sorted.sort((a, b) => (b?.Defense || 0) - (a?.Defense || 0));
+            break;
+        case 'def-low':
+            sorted.sort((a, b) => (a?.Defense || 0) - (b?.Defense || 0));
+            break;
+        case 'name-az':
+            sorted.sort((a, b) => (a?.Name || '').localeCompare(b?.Name || ''));
+            break;
+        case 'name-za':
+            sorted.sort((a, b) => (b?.Name || '').localeCompare(a?.Name || ''));
+            break;
+    }
+    
+    return sorted;
 }
 
 // Reset all filters
@@ -455,6 +485,7 @@ function resetFilters() {
     document.getElementById('typeFilter').value = '';
     document.getElementById('atkFilter').value = '';
     document.getElementById('defFilter').value = '';
+    document.getElementById('cardSortSelect').value = 'default';
     applyFilters();
 }
 
@@ -499,6 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('typeFilter').addEventListener('change', applyFilters);
     document.getElementById('atkFilter').addEventListener('input', applyFilters);
     document.getElementById('defFilter').addEventListener('input', applyFilters);
+    document.getElementById('cardSortSelect').addEventListener('change', applyFilters);
     
     // Fusion modal search and sort
     document.getElementById('fusionSearchInput').addEventListener('input', searchFusions);
